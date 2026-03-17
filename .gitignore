@@ -1,0 +1,81 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### macOS ###
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+### Logs ###
+*.log
+logs/
+
+### Environment & Secrets ###
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+application-secret.properties
+application-secret.yml
+**/src/main/resources/application-prod.*
+
+### Compiled / Generated ###
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+
+### Lombok / MapStruct generated sources ###
+target/generated-sources/
+
+### Kiro IDE ###
+.kiro/
+
+### Exclude non-entity application layers ###
+src/main/java/com/example/fixit/module/**/controller/
+src/main/java/com/example/fixit/module/**/service/
+src/main/java/com/example/fixit/module/**/repository/
+src/main/java/com/example/fixit/module/**/mapper/
+src/main/java/com/example/fixit/module/**/dto/
+src/main/java/com/example/fixit/module/**/specification/
+src/main/java/com/example/fixit/module/**/category/
+src/main/java/com/example/fixit/common/seed/
+src/main/java/com/example/fixit/common/exception/
