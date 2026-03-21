@@ -16,7 +16,10 @@ import java.util.List;
 @Setter
 @Table(name = "products")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "product_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(
+        name = "product_type",
+        discriminatorType = DiscriminatorType.STRING
+)
 public class Product extends AuditableEntity {
 
     @Column(name = "name", nullable = false, length = 100)
@@ -39,7 +42,7 @@ public class Product extends AuditableEntity {
     private ProductStatus status = ProductStatus.ACTIVE;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "condition", nullable = false, length = 10)
+    @Column(name = "product_condition", nullable = false, length = 10)
     private ProductCondition condition = ProductCondition.NEW;
 
     @ManyToOne(fetch = FetchType.LAZY)
