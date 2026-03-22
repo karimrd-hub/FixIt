@@ -69,13 +69,3 @@ target/generated-sources/
 ### Kiro IDE ###
 .kiro/
 
-### Exclude non-entity application layers ###
-src/main/java/com/example/fixit/module/**/controller/
-src/main/java/com/example/fixit/module/**/service/
-src/main/java/com/example/fixit/module/**/repository/
-src/main/java/com/example/fixit/module/**/mapper/
-src/main/java/com/example/fixit/module/**/dto/
-src/main/java/com/example/fixit/module/**/specification/
-src/main/java/com/example/fixit/module/**/category/
-src/main/java/com/example/fixit/common/seed/
-src/main/java/com/example/fixit/common/exception/
