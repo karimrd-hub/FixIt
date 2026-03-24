@@ -6,6 +6,7 @@ import com.example.fixit.module.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString(exclude = {"store", "images"})
 @Table(name = "products")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(
