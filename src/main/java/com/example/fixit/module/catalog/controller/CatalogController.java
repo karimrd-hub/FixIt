@@ -47,10 +47,6 @@ public class CatalogController {
         return ResponseEntity.ok(results);
     }
 
-    static void main() {
-
-    }
-
     // All params are optional — any combination can be used.
     // Example: GET /api/catalog/products/filter?city=Cairo&status=ACTIVE&serviceType=AUTOPARTS_ONLY
     @GetMapping("/products/filter")

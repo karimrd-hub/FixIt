@@ -125,21 +125,24 @@ public class ProductSpecifications {
     public static Specification<Product> fromFilter(ProductFilterDTO filter) {
         Specification<Product> spec = storeIsActive();
 
-        if (filter.getCategoryType() != null) {
-            spec = spec.and(byCategory(filter.getCategoryType()));
-        }
-        spec = spec.and(byStatus(filter.getStatus()));
-        spec = spec.and(byCondition(filter.getCondition()));
-        spec = spec.and(byGovernorate(filter.getGovernorate()));
-        spec = spec.and(byDistrict(filter.getDistrict()));
-        spec = spec.and(byCity(filter.getCity()));
-        spec = spec.and(byFulfillmentMode(filter.getFulfillmentMode()));
-        spec = spec.and(byServiceType(filter.getServiceType()));
-        spec = spec.and(byBrand(filter.getBrand()));
-        spec = spec.and(byPriceRange(filter.getPriceMin(), filter.getPriceMax()));
-        spec = spec.and(bySearchTerm(filter.getSearchTerm()));
+        spec = andIfNotNull(spec, filter.getCategoryType() != null ? byCategory(filter.getCategoryType()) : null);
+        spec = andIfNotNull(spec, byStatus(filter.getStatus()));
+        spec = andIfNotNull(spec, byCondition(filter.getCondition()));
+        spec = andIfNotNull(spec, byGovernorate(filter.getGovernorate()));
+        spec = andIfNotNull(spec, byDistrict(filter.getDistrict()));
+        spec = andIfNotNull(spec, byCity(filter.getCity()));
+        spec = andIfNotNull(spec, byFulfillmentMode(filter.getFulfillmentMode()));
+        spec = andIfNotNull(spec, byServiceType(filter.getServiceType()));
+        spec = andIfNotNull(spec, byBrand(filter.getBrand()));
+        spec = andIfNotNull(spec, byPriceRange(filter.getPriceMin(), filter.getPriceMax()));
+        spec = andIfNotNull(spec, bySearchTerm(filter.getSearchTerm()));
 
         return spec;
+    }
+
+    /** Null-safe AND — skips the second spec if it is null. */
+    private static Specification<Product> andIfNotNull(Specification<Product> base, Specification<Product> addition) {
+        return addition == null ? base : base.and(addition);
     }
 
     // Reuses an existing store join if present, avoids duplicate joins in the same query.
