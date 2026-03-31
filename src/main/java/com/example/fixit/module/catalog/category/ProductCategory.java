@@ -1,5 +1,6 @@
 package com.example.fixit.module.catalog.category;
 
+import com.example.fixit.common.exception.BadRequestException;
 import com.example.fixit.module.product.autoparts.airfilter.entity.AirFilter;
 import com.example.fixit.module.product.autoparts.alternator.entity.Alternator;
 import com.example.fixit.module.product.autoparts.shockabsorber.entity.ShockAbsorber;
@@ -38,6 +39,6 @@ public enum ProductCategory {
         return Arrays.stream(values())
                 .filter(c -> c.slug.equalsIgnoreCase(slug))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown category: " + slug));
+                .orElseThrow(() -> new BadRequestException("Unknown category: " + slug));
     }
 }

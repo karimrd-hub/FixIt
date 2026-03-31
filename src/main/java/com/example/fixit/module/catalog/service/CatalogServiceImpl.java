@@ -1,5 +1,6 @@
 package com.example.fixit.module.catalog.service;
 
+import com.example.fixit.common.exception.BadRequestException;
 import com.example.fixit.module.catalog.category.ProductCategory;
 import com.example.fixit.module.catalog.dto.CatalogResponseDTO;
 import com.example.fixit.module.catalog.dto.ProductFilterDTO;
@@ -34,7 +35,7 @@ public class CatalogServiceImpl implements CatalogService {
 
         if(city == null || city.isBlank()){
             log.warn("Rejected request: city parameter is blank");
-            throw new IllegalArgumentException("City must not be blank");
+            throw new BadRequestException("City must not be blank");
         }
 
         Class<? extends Product> type = ProductCategory.fromSlug(categorySlug).getEntityType();
