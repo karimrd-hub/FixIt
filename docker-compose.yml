@@ -1,0 +1,14 @@
+services:
+  postgres-dev:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: fixitdb_dev
+      POSTGRES_USER: fixit
+      POSTGRES_PASSWORD: fixit
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+
+volumes:
+  pgdata_dev:
