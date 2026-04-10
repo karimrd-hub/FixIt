@@ -17,18 +17,13 @@ This approach keeps your backend stateless (JWT validation only, no session) whi
 
 - **Frontend**: SPA (React or similar) with a `public` Keycloak client using Authorization Code + PKCE flow. The backend is a pure REST API — it never handles the login flow, only validates Bearer JWTs.
 - **Local Dev**: Keycloak container added to `docker-compose.yml` alongside Postgres, running on port 8180.
-- **Seller–Store Relationship**: A seller (User with role `SELLER`) can own one-to-many Stores. The `Store` entity will get a `@ManyToOne User owner` field, and the `User` entity will have a `@OneToMany List<Store> stores`. This will be implemented in Step 2 (User Entity).
+- **Seller–Store Relationship**: Managed via a `StoreStaff` join table with roles (`OWNER`, `EMPLOYEE`, `DELIVERY`) rather than a direct `@ManyToOne User owner` on Store. This supports multiple staff per store and users working at multiple stores. See [user-roles.md](user-roles.md) for full design.
 
-## Step 2: User Entity (Keycloak-Linked)
+## Step 2: User Entity & Role Model
 
-Your `user/entity` package is empty. The key decision: don't duplicate Keycloak's user data. Instead:
+> Role design: [user-roles.md](user-roles.md) · Implementation approach: [user-provisioning.md](user-provisioning.md)
 
-- Create a `User` entity extending `BaseEntity` with:
-  - `keycloakId` (String, unique) — the `sub` claim from the JWT
-  - `email`, `displayName` — cached from Keycloak for convenience
-  - `role` enum (`BUYER`, `SELLER`)
-- Auto-provision users on first authenticated request (a filter or service that checks if the `sub` exists in your DB, creates the record if not)
-- This gives you a local FK target for the cart without fighting Keycloak's user store
+A `UserProvisioningFilter` (`OncePerRequestFilter`) auto-creates the local `User` record on the first authenticated request using JWT claims (`sub`, `email`, `preferred_username`). This runs after JWT validation in the filter chain, so the `User` row exists before any controller, `@PreAuthorize`, or `AuditorAware` needs it. The `StoreStaff` join table maps users to stores with granular roles (`OWNER`, `EMPLOYEE`, `DELIVERY`). See [user-provisioning.md](user-provisioning.md) for the full implementation details including filter design, race-condition handling, service layer, and Liquibase migration.
 
 ## Step 3: Cart Domain Model
 
