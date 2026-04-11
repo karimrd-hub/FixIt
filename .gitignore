@@ -69,3 +69,6 @@ target/generated-sources/
 ### Kiro IDE ###
 .kiro/
 
+### Docs ###
+docs/
+
