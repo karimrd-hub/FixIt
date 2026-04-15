@@ -148,24 +148,43 @@ public class DataSeeder implements CommandLineRunner {
     private static final String[] SPRING_BRANDS  = {"Eibach","H&R","Bilstein","KW","Tein","Moog","Monroe","Sachs"};
     private static final String[] FLUID_BRANDS   = {"Castrol","Mobil","Shell","Valvoline","Fuchs","Liqui-Moly","Total","Motul"};
 
+    private static final Set<String> HIGH_DENSITY = Set.of("Beirut", "North", "Nabatieh");
+    private static final String[] STORE_SUFFIXES = {
+            "Auto Parts", "Car Parts", "Motor Supplies", "Auto Center", "Parts Hub",
+            "Auto Shop", "Car Care", "Auto Depot", "Parts Express", "Auto World",
+            "Motor Parts", "Auto Zone", "Parts Plus", "Auto Pro", "Car Fix",
+            "Auto Mart", "Parts City", "Auto Link", "Motor Hub", "Auto Spot"
+    };
+
     // ── Entry point ───────────────────────────────────────────────────────────
 
     @Override
     @Transactional
     public void run(String... args) {
         LEBANON.forEach((governorate, districts) ->
-                districts.forEach((district, cities) ->
+                districts.forEach((district, cities) -> {
+                    if (HIGH_DENSITY.contains(governorate)) {
+                        // Use ALL cities and create multiple stores per city
+                        int storesPerCity = Math.max(1, 300 / (districts.size() * cities.size()));
+                        cities.forEach(city -> {
+                            for (int i = 0; i < storesPerCity; i++) {
+                                createStore(governorate, district, city, STORE_SUFFIXES[i % STORE_SUFFIXES.length]);
+                            }
+                        });
+                    } else {
                         pickRandom(cities, 5).forEach(city ->
-                                createStore(governorate, district, city))));
+                                createStore(governorate, district, city, "Auto Parts"));
+                    }
+                }));
         em.flush();
         System.out.println("[DataSeeder] Seed complete.");
     }
 
     // ── Store creation ────────────────────────────────────────────────────────
 
-    private void createStore(String governorate, String district, String city) {
+    private void createStore(String governorate, String district, String city, String suffix) {
         Store store = new Store();
-        store.setName(city + " Auto Parts");
+        store.setName(city + " " + suffix);
         store.setDescription("Quality auto parts in " + city + ", " + district);
         store.setPhone("+961 " + (70 + rng.nextInt(10)) + " " + (100000 + rng.nextInt(900000)));
         store.setEmail("info@" + city.toLowerCase().replaceAll("[^a-z0-9]", "") + "autoparts.lb");
