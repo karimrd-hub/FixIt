@@ -22,6 +22,7 @@ import com.example.fixit.module.store.entity.FullfillmentMode;
 import com.example.fixit.module.store.entity.Store;
 import com.example.fixit.module.store.entity.StoreServiceType;
 import com.example.fixit.module.store.entity.StoreStatus;
+import com.example.fixit.module.user.entity.User;
 
 import java.math.BigDecimal;
 
@@ -34,6 +35,20 @@ import java.math.BigDecimal;
 public final class TestDataFactory {
 
     private TestDataFactory() {}
+
+    // ── User ──────────────────────────────────────────────────────────────────
+
+    public static User user() {
+        return user("kc-test-001", "test@example.com", "testuser");
+    }
+
+    public static User user(String keycloakId, String email, String displayName) {
+        User u = new User();
+        u.setKeycloakId(keycloakId);
+        u.setEmail(email);
+        u.setDisplayName(displayName);
+        return u;
+    }
 
     // ── Store ─────────────────────────────────────────────────────────────────
 
