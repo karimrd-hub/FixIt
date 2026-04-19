@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/migrations/V001__initial_schema.sql
   - include:
       file: db/changelog/migrations/V002__users_and_store_staff.sql
+  - include:
+      file: db/changelog/migrations/V003__cart.sql
