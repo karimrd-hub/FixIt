@@ -149,7 +149,21 @@ class UserProvisioningFilterTest {
     class FilterChainContinuation {
 
         @Test
-        void alwaysContinuesFilterChain() throws ServletException, IOException {
+        void continuesFilterChainWhenProvisioningSucceeds() throws ServletException, IOException {
+            Jwt jwt = buildJwt(Map.of(
+                    "sub", "kc-000",
+                    "email", "user@example.com",
+                    "preferred_username", "testuser"
+            ));
+            setJwtAuthentication(jwt);
+
+            filter.doFilterInternal(request, response, filterChain);
+
+            verify(filterChain).doFilter(request, response);
+        }
+
+        @Test
+        void propagatesProvisioningExceptionAndAbortsChain() {
             Jwt jwt = buildJwt(Map.of(
                     "sub", "kc-000",
                     "email", "user@example.com",
@@ -159,9 +173,11 @@ class UserProvisioningFilterTest {
             doThrow(new RuntimeException("provisioning failed"))
                     .when(userProvisioningService).provisionIfAbsent(anyString(), anyString(), anyString());
 
-            filter.doFilterInternal(request, response, filterChain);
-
-            verify(filterChain).doFilter(request, response);
+            org.junit.jupiter.api.Assertions.assertThrows(
+                    RuntimeException.class,
+                    () -> filter.doFilterInternal(request, response, filterChain)
+            );
+            verifyNoInteractions(filterChain);
         }
     }
 }
