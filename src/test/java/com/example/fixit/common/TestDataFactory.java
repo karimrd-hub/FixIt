@@ -20,7 +20,10 @@ import com.example.fixit.module.product.autoparts.tire.entity.Tire;
 import com.example.fixit.module.product.autoparts.transmissionfluid.entity.TransmissionFluid;
 import com.example.fixit.module.store.entity.FullfillmentMode;
 import com.example.fixit.module.store.entity.Store;
+import com.example.fixit.module.store.entity.StoreRole;
 import com.example.fixit.module.store.entity.StoreServiceType;
+import com.example.fixit.module.store.entity.StoreStaff;
+import com.example.fixit.module.store.entity.StoreStaffStatus;
 import com.example.fixit.module.store.entity.StoreStatus;
 import com.example.fixit.module.user.entity.User;
 
@@ -71,6 +74,21 @@ public final class TestDataFactory {
         s.setFulfillmentMode(FullfillmentMode.IN_SHOP);
         s.setRating(BigDecimal.valueOf(4.5));
         return s;
+    }
+
+    // ── StoreStaff ────────────────────────────────────────────────────────────
+
+    public static StoreStaff storeStaff(User user, Store store, StoreRole role) {
+        return storeStaff(user, store, role, StoreStaffStatus.ACTIVE);
+    }
+
+    public static StoreStaff storeStaff(User user, Store store, StoreRole role, StoreStaffStatus status) {
+        StoreStaff ss = new StoreStaff();
+        ss.setUser(user);
+        ss.setStore(store);
+        ss.setStoreRole(role);
+        ss.setStatus(status);
+        return ss;
     }
 
     // ── Base product helper ───────────────────────────────────────────────────
